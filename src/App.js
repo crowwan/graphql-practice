@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import { test } from "./util/graphql";
+import "./App.css";
+import { useEffect, useState } from "react";
+
 
 function App() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    (async () => {
+      const repo = await test();
+      setData(repo.discussions.nodes);
+    })();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className="App">{data && data.map((a) => <div>{a.title}</div>)}</div>
   );
 }
 
